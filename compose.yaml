@@ -1,0 +1,15 @@
+services:
+  ilp:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ilp-gem5-part2:v25.1.0.1
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+    environment:
+      GEM5_BIN: /opt/gem5/build/X86/gem5.opt
+    stdin_open: true
+    tty: true
+

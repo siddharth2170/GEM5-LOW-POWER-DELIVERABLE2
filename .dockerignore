@@ -1,0 +1,9 @@
+.git
+.venv
+gem5
+build
+results
+__pycache__
+*.pyc
+ilp-gem5-part2.zip
+
