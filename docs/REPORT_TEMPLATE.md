@@ -13,7 +13,7 @@
 ## 1. Basic Pipeline Simulation
 
 Insert the configuration-terminal screenshot and a readable excerpt from
-`results/pipeline_trace/minor_trace.txt`.
+`results/pipeline_trace/execution_trace.txt`.
 
 Explain pipeline fill, steady-state overlap, dependencies, stalls, and branch
 redirection. Report cycles, committed instructions, IPC, and observed trace
@@ -49,4 +49,3 @@ Balance performance against area, power, design complexity, and security.
 ## Troubleshooting
 
 Document at least one actual issue, its diagnostic evidence, and the fix.
-

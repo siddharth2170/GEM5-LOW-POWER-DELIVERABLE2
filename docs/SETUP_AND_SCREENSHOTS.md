@@ -52,20 +52,18 @@ docker compose run --rm ilp bash -lc \
   './scripts/build_workloads.sh && ./scripts/run_section.sh pipeline'
 ```
 
-The main output is `results/pipeline_minor/`; the cycle-level trace is
-`results/pipeline_trace/minor_trace.txt`.
+The main output is `results/pipeline_timing/`; the instruction trace is
+`results/pipeline_trace/execution_trace.txt`.
 
 ```bash
-head -n 35 results/pipeline_trace/minor_trace.txt
-grep -E "simInsts|numCycles|ipc" results/pipeline_minor/stats.txt
+head -n 35 results/pipeline_trace/execution_trace.txt
+grep -E "simInsts|numCycles|ipc" results/pipeline_timing/stats.txt
 ```
 
 **Screenshot 5:** Terminal showing the pipeline configuration and completion.
 
-**Screenshot 6:** A readable trace excerpt showing instructions in MinorCPU
-pipeline stages. Explain that MinorCPU exposes Fetch1, Fetch2, Decode, and
-Execute; memory access and commit/writeback activity are modeled within its
-execute machinery rather than as separately named classic five-stage blocks.
+**Screenshot 6:** A readable execution-trace excerpt from the X86 in-order
+timing baseline.
 
 **Screenshot 7:** Pipeline statistics (`simInsts`, cycles, and IPC if present).
 

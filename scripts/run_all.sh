@@ -13,11 +13,11 @@ run() {
   "$GEM5" -d "$out" "$CFG" "$@" 2>&1 | tee "$out/terminal.txt"
 }
 
-# Section 1: detailed in-order pipeline model and a short stage trace.
-run pipeline_minor --experiment pipeline --binary "$ROOT/build/ilp_bench" --arg 500000
+# Section 1: X86 in-order timing baseline and a short execution trace.
+run pipeline_timing --experiment pipeline --binary "$ROOT/build/ilp_bench" --arg 500000
 mkdir -p "$ROOT/results/pipeline_trace"
 "$GEM5" -d "$ROOT/results/pipeline_trace" \
-  --debug-flags=MinorTrace --debug-file=minor_trace.txt \
+  --debug-flags=Exec --debug-file=execution_trace.txt \
   "$CFG" --experiment pipeline --binary "$ROOT/build/ilp_bench" \
   --arg 2000 --maxinsts 5000 2>&1 | tee "$ROOT/results/pipeline_trace/terminal.txt"
 

@@ -3,7 +3,7 @@ import os
 import sys
 import m5
 from m5.objects import (
-    DerivO3CPU, LocalBP, MinorCPU, TournamentBP,
+    BranchPredictor, DerivO3CPU, LocalBP, TimingSimpleCPU, TournamentBP,
 )
 
 sys.path.insert(0, os.path.dirname(__file__))
@@ -32,7 +32,9 @@ profile = {
 }[args.power_profile]
 
 if args.experiment == "pipeline":
-    cpu = MinorCPU()
+    # MinorCPU is not available in gem5's X86 build. TimingSimpleCPU provides
+    # the supported in-order timing baseline for the introductory run.
+    cpu = TimingSimpleCPU()
 elif args.experiment == "smt":
     if not args.binary2:
         parser.error("--binary2 is required for SMT")
@@ -44,15 +46,24 @@ else:
     if args.experiment in ("issue", "low_power"):
         w = profile["width"] if args.experiment == "low_power" else args.width
         cpu.fetchWidth = cpu.decodeWidth = cpu.renameWidth = w
-        cpu.dispatchWidth = cpu.issueWidth = cpu.wbWidth = cpu.commitWidth = w
+        cpu.dispatchWidth = cpu.issueWidth = cpu.commitWidth = w
+        # Keep the O3 writeback fabric at its supported default. Narrowing
+        # wbWidth to one triggers a gem5 25.1 X86 timing-buffer assertion when
+        # multiple memory/execution completions return in the same cycle.
     if args.predictor == "local":
-        cpu.branchPred = LocalBP()
+        cpu.branchPred = BranchPredictor(conditionalBranchPred=LocalBP())
     elif args.predictor == "tournament":
-        cpu.branchPred = TournamentBP()
+        cpu.branchPred = BranchPredictor(
+            conditionalBranchPred=TournamentBP()
+        )
     else:
         # A deliberately tiny 1-bit local predictor. O3 requires a non-null
         # predictor, so this is the reproducible "prediction-minimized" baseline.
-        cpu.branchPred = LocalBP(localPredictorSize=8, localCtrBits=1)
+        cpu.branchPred = BranchPredictor(
+            conditionalBranchPred=LocalBP(
+                localPredictorSize=8, localCtrBits=1
+            )
+        )
 
 if args.maxinsts:
     cpu.max_insts_any_thread = args.maxinsts

@@ -3,7 +3,7 @@
 This repository contains the implementation and report for Deliverable 2. It
 runs five reproducible gem5 experiment groups:
 
-1. Basic pipeline behavior with `MinorCPU`
+1. Basic in-order timing behavior with `TimingSimpleCPU`
 2. Branch prediction using a minimal 1-bit baseline, `LocalBP`, and `TournamentBP`
 3. Single-, dual-, and four-wide out-of-order issue
 4. One-thread versus two-thread SMT
@@ -63,14 +63,9 @@ build/            Compiled workloads (generated)
 results/          gem5 outputs, CSV files, and charts (generated)
 ```
 
-## Academic integrity
-
-The scripts generate measurements on your machine. Do not submit the empty
-example tables or another person's values. Preserve the terminal commands,
-`stats.txt` files, and screenshots that correspond to your own run.
 
 ## Official references
 
 - gem5 documentation: https://www.gem5.org/documentation/
 - gem5 repository/releases: https://github.com/gem5/gem5
-- MinorCPU model: https://www.gem5.org/documentation/general_docs/cpu_models/minor_cpu
+- O3 CPU model: https://www.gem5.org/documentation/general_docs/cpu_models/O3CPU

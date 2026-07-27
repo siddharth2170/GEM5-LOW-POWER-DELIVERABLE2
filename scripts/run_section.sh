@@ -13,10 +13,10 @@ run() {
 }
 case "${1:-}" in
   pipeline)
-    run pipeline_minor --experiment pipeline --binary "$ROOT/build/ilp_bench" --arg 500000
+    run pipeline_timing --experiment pipeline --binary "$ROOT/build/ilp_bench" --arg 500000
     mkdir -p "$ROOT/results/pipeline_trace"
-    "$GEM5" -d "$ROOT/results/pipeline_trace" --debug-flags=MinorTrace \
-      --debug-file=minor_trace.txt "$CFG" --experiment pipeline \
+    "$GEM5" -d "$ROOT/results/pipeline_trace" --debug-flags=Exec \
+      --debug-file=execution_trace.txt "$CFG" --experiment pipeline \
       --binary "$ROOT/build/ilp_bench" --arg 2000 --maxinsts 5000 2>&1 |
       tee "$ROOT/results/pipeline_trace/terminal.txt" ;;
   branch)
@@ -33,6 +33,12 @@ case "${1:-}" in
     run smt_1thread --experiment issue --width 4 --binary "$ROOT/build/thread_a"
     run smt_2thread --experiment smt --binary "$ROOT/build/thread_a" \
       --binary2 "$ROOT/build/thread_b" ;;
+  low_power)
+    for profile in performance balanced eco; do
+      run "low_power_${profile}" --experiment low_power \
+        --power-profile "$profile" --predictor tournament \
+        --binary "$ROOT/build/ilp_bench" --arg 750000
+    done ;;
   *)
-    echo "Usage: $0 {pipeline|branch|issue|smt}"; exit 2 ;;
+    echo "Usage: $0 {pipeline|branch|issue|smt|low_power}"; exit 2 ;;
 esac
