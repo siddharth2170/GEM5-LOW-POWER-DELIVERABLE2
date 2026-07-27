@@ -27,4 +27,11 @@ bar(["issue_w1","issue_w2","issue_w4"],["1-wide","2-wide","4-wide"],"ipc",
     "Multiple-Issue Performance","Committed IPC","issue_ipc.png")
 bar(["smt_1thread","smt_2thread"],["1 thread","2-thread SMT"],"ipc",
     "SMT Aggregate Throughput","Aggregate committed IPC","smt_ipc.png")
+bar(["low_power_performance","low_power_balanced","low_power_eco"],
+    ["Performance","Balanced","Eco"],"ipc",
+    "Low-Power Profiles: Performance","Committed IPC","low_power_ipc.png")
+bar(["low_power_performance","low_power_balanced","low_power_eco"],
+    ["Performance","Balanced","Eco"],"normalized_energy_proxy",
+    "Low-Power Profiles: Normalized Energy Proxy",
+    "Normalized energy proxy","low_power_energy_proxy.png")
 print(CHARTS)
