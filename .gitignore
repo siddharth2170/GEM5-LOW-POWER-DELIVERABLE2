@@ -1,6 +1,6 @@
 gem5/
 build/
 results/
+m5out/
 __pycache__/
 *.pyc
-
