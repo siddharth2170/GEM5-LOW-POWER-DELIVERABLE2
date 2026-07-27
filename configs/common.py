@@ -26,6 +26,9 @@ def make_system(cpu, binaries, options=None, clock="2GHz", voltage="1.0V"):
     )
     system.mem_mode = "timing"
     system.mem_ranges = [AddrRange("512MiB")]
+    # Required by gem5 when one CPU object exposes multiple thread contexts
+    # (the two-workload SMT experiment).
+    system.multi_thread = len(binaries) > 1
     system.cpu = cpu
     system.membus = SystemXBar()
     system.l2bus = L2XBar()
@@ -40,9 +43,10 @@ def make_system(cpu, binaries, options=None, clock="2GHz", voltage="1.0V"):
     cpu.icache.mem_side = system.l2bus.cpu_side_ports
     cpu.dcache.mem_side = system.l2bus.cpu_side_ports
     cpu.createInterruptController()
-    cpu.interrupts[0].pio = system.membus.mem_side_ports
-    cpu.interrupts[0].int_requestor = system.membus.cpu_side_ports
-    cpu.interrupts[0].int_responder = system.membus.mem_side_ports
+    for controller in cpu.interrupts:
+        controller.pio = system.membus.mem_side_ports
+        controller.int_requestor = system.membus.cpu_side_ports
+        controller.int_responder = system.membus.mem_side_ports
 
     system.system_port = system.membus.cpu_side_ports
     system.mem_ctrl = MemCtrl()
